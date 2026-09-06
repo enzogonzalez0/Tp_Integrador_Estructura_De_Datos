@@ -33,6 +33,8 @@
 0. Salir
 
 Seleccione una opción: _
+```
+```mermaid
 classDiagram
     class Libro {
         - str id
@@ -61,3 +63,4 @@ classDiagram
 
     Biblioteca "1" *-- "many" Libro
     SistemaRecomendacion ..> Biblioteca
+```
