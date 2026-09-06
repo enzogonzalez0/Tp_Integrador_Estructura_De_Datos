@@ -1,0 +1,124 @@
+class BookFinder:
+    def __init__(self, titulo, genero, autor, año, calificacion):
+        self._titulo = titulo
+        self._genero = genero
+        self._autor = autor
+        self._año = año
+        self._calificacion = calificacion
+
+    def get_titulo(self):
+        return self._titulo
+
+    def get_genero(self):
+        return self._genero
+
+    def get_autor(self):
+        return self._autor
+
+    def get_año(self):
+        return self._año
+
+    def get_calificacion(self):
+        return self._calificacion
+
+    def __str__(self):
+        return f"{self._titulo}; {self._genero}; {self._autor}; {self._año}; {self._calificacion}"
+
+import json
+
+def cargar_libros_desde_json(ruta_archivo):
+
+    with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
+
+        datos = json.load(archivo)
+
+        libros = []
+
+        for elemento in datos:
+
+            libro = BookFinder(
+                titulo=elemento.get('titulo'),
+                genero=elemento.get('genero'),
+                autor=elemento.get('autor'),
+                año=elemento.get('año'),
+                calificacion=elemento.get('calificacion')
+            )
+
+            libros.append(libro)
+
+        return libros
+
+from Book_Finder import cargar_libros_desde_json
+
+def lista_libros(libros):
+    for libro in libros:
+        print(libro)
+
+def buscar_libro(libros):
+    texto = input("Ingrese el título o autor: ").lower()
+
+    encontrados = []
+
+    for libro in libros:
+        if (texto in libro.get_titulo().lower()
+                or texto in libro.get_autor().lower()):
+            encontrados.append(libro)
+
+    if encontrados:
+        for libro in encontrados:
+            print(libro)
+    else:
+        print("No se encontraron libros.")
+
+
+def filtrar_por_genero(libros):
+    genero = input("Ingrese el género: ").lower()
+
+    encontrados = []
+
+    for libro in libros:
+        if libro.get_genero().lower() == genero:
+            encontrados.append(libro)
+
+    if encontrados:
+        for libro in encontrados:
+            print(libro)
+    else:
+        print("No se encontraron libros de ese género.")
+
+
+def mostrar_menu():
+    print("\n===== BOOK FINDER =====")
+    print("1. Listar libros")
+    print("2. Buscar libro")
+    print("3. Filtrar por género")
+    print("0. Salir")
+
+
+def main():
+    libros = cargar_libros_desde_json("datos.json")
+
+    while True:
+        mostrar_menu()
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            lista_libros(libros)
+
+        elif opcion == "2":
+            buscar_libro(libros)
+
+        elif opcion == "3":
+            filtrar_por_genero(libros)
+
+        elif opcion == "0":
+            print("Hasta luego.")
+            break
+
+        else:
+            print("Opción inválida.")
+
+
+if __name__ == "__main__":
+    main()
