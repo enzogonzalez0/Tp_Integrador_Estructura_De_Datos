@@ -64,3 +64,12 @@ classDiagram
     Biblioteca "1" *-- "many" Libro
     SistemaRecomendacion ..> Biblioteca
 ```
+
+## Entrega 2: TP2 — Búsqueda Secuencial
+**1. Análisis de Complejidad**
+El algoritmo de Busqueda secuencial realiza un recorrido lineal sobre la estructura de datos. En el peor de los casos como cuando el elemento buscado esta en el final o no existe, debe comparar la clave con los $N$ elementos, resultando en una complejidad de **$O(N)$**.
+
+**2. Tiempos de Ejecución**
+* **N = 1.000:** [Tiempo] ms
+* **N = 10.000:** [Tiempo] ms
+* **N = 100.000:** [Tiempo] ms
