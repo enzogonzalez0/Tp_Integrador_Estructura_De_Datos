@@ -1,0 +1,120 @@
+class nodo:
+    def __init__(self, libro):
+        #Guardfamos el libro dentro del nodo
+        self.libro = libro 
+        self.izquierdo = None
+        self.derecho = None
+
+
+class ArbolBinarioBusqueda:
+    def __init__(self):
+        self.raiz = None
+
+    def insertar(self, libro):
+        self.raiz = self._insertar(self.raiz, libro)
+
+    def _insertar(self, nodo, libro):
+        if nodo is None:
+            return nodo(libro)
+
+        # Los libros se ordenand de manera alfabetica, 
+        # sin importar si estan escritos conh mius. o mayus. y 
+        # obtenemos su nombre en minusculas para compararlos.
+        titulo_nuevo = libro.get_titulo().lower()
+        titulo_actual = nodo.libro.get_titulo().lower()
+
+        # Si el título nuevo viene antes alfabéticamente,
+        # se inserta en el subárbol izquierdo
+        if titulo_nuevo < titulo_actual:
+            nodo.izquierdo = self._insertar(
+                nodo.izquierdo,
+                libro
+            )
+
+        # Si el título nuevo viene después alfabéticamente,
+        # se inserta en el subárbol derecho
+        elif titulo_nuevo > titulo_actual:
+            nodo.derecho = self._insertar(
+                nodo.derecho,
+                libro
+            )
+        return nodo
+
+    def buscar(self, titulo_buscado):
+        return self._buscar(
+            self.raiz,
+            titulo_buscado.lower()
+        )
+
+    def _buscar(self, nodo, titulo_buscado):
+        if nodo is None:
+            return None
+
+        titulo_actual = nodo.libro.get_titulo().lower()
+
+        # Si encontramos el título, devolvemos el libro
+        if titulo_buscado == titulo_actual:
+            return nodo.libro
+        if titulo_buscado < titulo_actual:
+            return self._buscar(
+                nodo.izquierdo,
+                titulo_buscado
+            )
+        return self._buscar(
+            nodo.derecho,
+            titulo_buscado
+        )
+
+    def inorder(self):
+        resultado = []
+        self._inorder(self.raiz, resultado)
+        return resultado
+
+    def _inorder(self, nodo, resultado):
+
+        if nodo is not None:
+
+            # Primero se recorre el lado izquierdo
+            self._inorder(nodo.izquierdo, resultado)
+
+            # Después agregamos el nodo actual
+            resultado.append(nodo.libro)
+
+            # Y después el lado derecho
+            self._inorder(nodo.derecho, resultado)
+
+    def preorder(self):
+        resultado = []
+        self._preorder(self.raiz, resultado)
+        return resultado
+
+    def _preorder(self, nodo, resultado):
+
+        if nodo is not None:
+
+            # Primero visitamos el nodo actual
+            resultado.append(nodo.libro)
+
+            # Después recorremos izquierda
+            self._preorder(nodo.izquierdo, resultado)
+
+            # Finalmente recorremos derecha
+            self._preorder(nodo.derecho, resultado)
+
+    def postorder(self):
+        resultado = []
+        self._postorder(self.raiz, resultado)
+        return resultado
+
+    def _postorder(self, nodo, resultado):
+
+        if nodo is not None:
+
+            # Primero recorremos izquierda
+            self._postorder(nodo.izquierdo, resultado)
+
+            # Después recorremos derecha
+            self._postorder(nodo.derecho, resultado)
+
+            # Finalmente visitamos el nodo actual
+            resultado.append(nodo.libro)
