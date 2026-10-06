@@ -1,7 +1,6 @@
 import sys
-from estructuras.avl import AVL
-from estructuras.arbol_general import ArbolGeneral
-
+from estructuras.TP4avl import AVL
+from estructuras.TP5arbol_general import ArbolGeneral
 
 def cargar_datos_demo(arbol_avl, arbol_cat):
     libros = [
