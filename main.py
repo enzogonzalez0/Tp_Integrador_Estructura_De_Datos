@@ -4,7 +4,6 @@ from estructuras.arbol_general import ArbolGeneral
 
 
 def cargar_datos_demo(arbol_avl, arbol_cat):
-    # Carga de libros en el AVL
     libros = [
        "El Principito",
         "Rebelion en la Granja",
@@ -17,7 +16,6 @@ def cargar_datos_demo(arbol_avl, arbol_cat):
     for libro in libros:
         arbol_avl.insertar(libro)
 
-    # Carga de jerarquía en el Árbol General
     arbol_cat.agregar_raiz("Categorias")
     arbol_cat.agregar_hijo("Categorias", "Ficcion")
     arbol_cat.agregar_hijo("Categorias", "No Ficcion")
