@@ -55,3 +55,25 @@ def bfs(self, inicio):
 
         _dfs_recursivo(inicio)
         return orden
+
+def dijkstra(self, origen):
+        import heapq
+        distancias = {vertice: float('inf') for vertice in self.adj}
+        distancias[origen] = 0
+        
+        priority_queue = [(0, origen)]
+        
+        while priority_queue:
+            costo_actual, actual = heapq.heappop(priority_queue)
+            
+            if costo_actual > distancias[actual]:
+                continue
+                
+            for vecino, peso in self.adj.get(actual, {}).items():
+                costo_nuevo = costo_actual + peso
+                
+                if costo_nuevo < distancias[vecino]:
+                    distancias[vecino] = costo_nuevo
+                    heapq.heappush(priority_queue, (costo_nuevo, vecino))
+                    
+        return distancias
