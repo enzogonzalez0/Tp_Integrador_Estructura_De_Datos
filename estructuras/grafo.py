@@ -22,3 +22,36 @@ class Grafo:
         if vertice in self.adj:
             return self.adj[vertice]
         return {}
+
+def bfs(self, inicio):
+        """Recorrido BFS (Anchura) - Devuelve los nodos ordenados por nivel de cercanía."""
+        visitados = set()
+        cola = [inicio]
+        visitados.add(inicio)
+        orden = []
+
+        while cola:
+            actual = cola.pop(0)
+            orden.append(actual)
+            
+            for vecino in self.adj.get(actual, {}):
+                if vecino not in visitados:
+                    visitados.add(vecino)
+                    cola.append(vecino)
+                    
+        return orden
+
+    def dfs(self, inicio):
+        """Recorrido DFS (Profundidad) - Explora las ramas en profundidad."""
+        visitados = set()
+        orden = []
+
+        def _dfs_recursivo(nodo):
+            visitados.add(nodo)
+            orden.append(nodo)
+            for vecino in self.adj.get(nodo, {}):
+                if vecino not in visitados:
+                    _dfs_recursivo(vecino)
+
+        _dfs_recursivo(inicio)
+        return orden
