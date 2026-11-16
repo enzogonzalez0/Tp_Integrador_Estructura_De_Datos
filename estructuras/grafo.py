@@ -1,79 +1,77 @@
-#TP7: estructura de Grafo No dirigido y pesado (Lista de Adyacencia)
-
 class Grafo:
     def __init__(self):
-        self.adj = {}
+        self.adj_list = {}
 
     def agregar_vertice(self, vertice):
-        """Agrega un libro al grafo si no existe."""
-        if vertice not in self.adj:
-            self.adj[vertice] = {}
+        if vertice not in self.adj_list:
+            self.adj_list[vertice] = {}
 
     def agregar_arista(self, origen, destino, peso=1.0):
-        """Conecta dos libros con un peso de similitud (bidireccional)."""
         self.agregar_vertice(origen)
         self.agregar_vertice(destino)
-        
-        self.adj[origen][destino] = peso
-        self.adj[destino][origen] = peso
+        self.adj_list[origen][destino] = peso
+        self.adj_list[destino][origen] = peso  # No dirigido
 
     def obtener_vecinos(self, vertice):
-        """Devuelve los libros conectados y el peso de su relacion."""
-        if vertice in self.adj:
-            return self.adj[vertice]
-        return {}
+        return self.adj_list.get(vertice, {})
 
-def bfs(self, inicio):
-        """Recorrido BFS (Anchura) - Devuelve los nodos ordenados por nivel de cercanía."""
-        visitados = set()
+    def bfs(self, inicio):
+        if inicio not in self.adj_list:
+            return []
+        
+        visitados = []
         cola = [inicio]
-        visitados.add(inicio)
-        orden = []
+        visitados_set = {inicio}
 
         while cola:
             actual = cola.pop(0)
-            orden.append(actual)
-            
-            for vecino in self.adj.get(actual, {}):
-                if vecino not in visitados:
-                    visitados.add(vecino)
-                    cola.append(vecino)
-                    
-        return orden
+            visitados.append(actual)
+            for vecino in self.adj_list[actual]:
+                if vecino not in visitados_set:
+                        visitados_set.add(vecino)
+                        cola.append(vecino)
+        return visitados
 
     def dfs(self, inicio):
-        """Recorrido DFS (Profundidad) - Explora las ramas en profundidad."""
-        visitados = set()
-        orden = []
+        if inicio not in self.adj_list:
+            return []
+        
+        visitados = []
+        pila = [inicio]
+        visitados_set = set()
 
-        def _dfs_recursivo(nodo):
-            visitados.add(nodo)
-            orden.append(nodo)
-            for vecino in self.adj.get(nodo, {}):
-                if vecino not in visitados:
-                    _dfs_recursivo(vecino)
+        while pila:
+            actual = pila.pop()
+            if actual not in visitados_set:
+                visitados_set.add(actual)
+                visitados.append(actual)
+                # Agregar vecinos en orden inverso para mantener consistencia en la pila
+                for vecino in sorted(self.adj_list[actual].keys(), reverse=True):
+                    if vecino not in visitados_set:
+                        pila.append(vecino)
+        return visitados
 
-        _dfs_recursivo(inicio)
-        return orden
-
-def dijkstra(self, origen):
+    def dijkstra(self, origen):
         import heapq
-        distancias = {vertice: float('inf') for vertice in self.adj}
-        distancias[origen] = 0
         
-        priority_queue = [(0, origen)]
-        
-        while priority_queue:
-            costo_actual, actual = heapq.heappop(priority_queue)
+        distancias = {vertice: float('inf') for vertice in self.adj_list}
+        if origen not in distancias:
+            return distancias
             
-            if costo_actual > distancias[actual]:
+        distancias[origen] = 0
+        pq = [(0, origen)]
+
+        while pq:
+            dist_actual, actual = heapq.heappop(pq)
+
+            if dist_actual > distancias[actual]:
                 continue
-                
-            for vecino, peso in self.adj.get(actual, {}).items():
-                costo_nuevo = costo_actual + peso
-                
-                if costo_nuevo < distancias[vecino]:
-                    distancias[vecino] = costo_nuevo
-                    heapq.heappush(priority_queue, (costo_nuevo, vecino))
-                    
+
+            for vecino, peso in self.adj_list[actual].items():
+                distancia = dist_actual + peso
+
+                if distancia < distancias[vecino]:
+                    distancias[vecino] = distancia
+                    heapq.heappush(pq, (distancia, vecino))
+
         return distancias
